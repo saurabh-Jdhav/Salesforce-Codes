@@ -67,11 +67,9 @@ export default class ContactTable extends NavigationMixin(LightningElement) {
           }
         });
         return refreshApex(this.contactList); // Refreshing contactList after editing the record
-        break;
      case 'delete':
         this.delContact();
-        return refreshApex(this.contactList);
-        break;
+        return refreshApex(this.contactList); // Record will be deleted
     }
   }
   //This function created for deleting the record

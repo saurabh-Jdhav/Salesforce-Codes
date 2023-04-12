@@ -5,11 +5,10 @@
     <lightning-layout multiple-rows="true" vertical-align="end">
       <!-- Creates a Lightning layout item with a size of 4 and padding, which contains a search input field -->
       <lightning-layout-item size="4" padding="around-small">     
-
         <lightning-input  
                 type="search"
                 label="Search Contacts"
-                placeholder="type here..."
+                placeholder="Search..."
                 value={searchKey}
                 onchange={handleInputChange}>
         </lightning-input>
@@ -25,32 +24,15 @@
         </lightning-button>
 
       </lightning-layout-item>
-
-
-
-
       <!-- Creates a Lightning layout item with padding, which contains a datatable to display contact records -->
-
       <lightning-layout-item padding="around-small">
-
         <lightning-datatable  key-field="Id"
-
                     data={contactList.data}
-
                     columns={columns}
-
                     hide-checkbox-column="true"
-
                     onrowaction={callRowAction}>
-
         </lightning-datatable>
-
       </lightning-layout-item>
-
-   
-
     </lightning-layout>
-
   </lightning-card>
-
 </template>
