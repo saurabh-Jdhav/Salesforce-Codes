@@ -9,18 +9,18 @@ public with sharing class WrapperClass {
         // Concatenate the wildcard search term "%"
         textKey = '%'+ textKey +'%';
         // New list to hold the "ContactWrapper" objects
-        List<ContactWrapper> wrapprConList = new List<ContactWrapper>();
+        List<ContactWrapper> objWrapperContact = new List<ContactWrapper>();
         // retrieve a list of up to 10 records whose "Name" field matches the "textKey" search term
-        List<Contact> conList = [SELECT Name, Email, MobilePhone,
-                                    Account.BillingCity, Account.BillingState
-                    FROM Contact
-                          WHERE Name LIKE: textKey
-                          OR  Email LIKE: textKey
-                          OR  MobilePhone LIKE: textKey
-                          OR  Account.BillingCity LIKE: textKey
-                          OR  Account.BillingState LIKE: textKey
-                    LIMIT 10];
-        for(Contact con :conList )
+        List<Contact> objContact = [SELECT Name, Email, MobilePhone,
+                                  Account.BillingCity, Account.BillingState
+                                  FROM Contact
+                                  WHERE Name LIKE: textKey
+                                  OR  Email LIKE: textKey
+                                  OR  MobilePhone LIKE: textKey
+                                  OR  Account.BillingCity LIKE: textKey
+                                  OR  Account.BillingState LIKE: textKey
+                                  LIMIT 10];
+        for(Contact con :objContact )
         {
           // Create a new "ContactWrapper" object for each Contact record
           ContactWrapper newWrp = new ContactWrapper();
@@ -33,9 +33,9 @@ public with sharing class WrapperClass {
           newWrp.BillingCity = con.Account.BillingCity;
           newWrp.BillingState = con.Account.BillingState;
           // Add the ContactWrapper object to the list
-          wrapprConList.add(newWrp);
+          objWrapperContact.add(newWrp);
         }
-        return wrapprConList;
+        return objWrapperContact;
       }
       // This is a nested class named "ContactWrapper"
       public class ContactWrapper

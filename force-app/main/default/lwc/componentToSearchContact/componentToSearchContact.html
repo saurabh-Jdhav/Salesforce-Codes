@@ -1,38 +1,42 @@
 <template>
-  <!-- Creates a Lightning card with the title "Contact Search Records" and the icon "standard:contact" -->
-  <lightning-card title="Contact Search Records" icon-name="standard:contact">
-    <!-- Creates a Lightning layout with multiple rows and items aligned vertically to the bottom -->
+  <!-- the title "Contact Search Records" and the icon "standard:contact" -->
+  <lightning-card title="Contact Details" icon-name="standard:contact">
+    <!-- layout with multiple rows and items aligned vertically to the bottom -->
     <lightning-layout multiple-rows="true" vertical-align="end">
-      <!-- Creates a Lightning layout item with a size of 4 and padding, which contains a search input field -->
+      <!-- a search input field -->
       <lightning-layout-item size="4" padding="around-small">     
         <lightning-input  
                 type="search"
                 label="Search Contacts"
                 placeholder="Search..."
-                value={searchKey}
-                onchange={handleInputChange}>
+                value={contactSearch}
+                onchange={handleSearchEvent}>
         </lightning-input>
       </lightning-layout-item>
-      <!-- Creates a Lightning layout item with a size of 2 and padding, which contains a button to add a new contact -->
+      <!--a button to add a new contact -->
       <lightning-layout-item size="2" padding="around-small">
         <lightning-button
                 label="Add New Contact"
                 variant="Neutral"
                 name="Create Contact"
                 onclick={handleContactCreate}
-                style="margin-left:775px;">
+                style="margin-right:50px;">
         </lightning-button>
 
       </lightning-layout-item>
-      <!-- Creates a Lightning layout item with padding, which contains a datatable to display contact records -->
-      <lightning-layout-item padding="around-small">
+      <!-- a datatable to display contact records -->
+      <div class="slds-m-horizontal_medium" style="border: 1px solid;background-color: rgb(201, 201, 201);border-radius:5px">
+      <lightning-layout-item slds-p-horizontal_small>
         <lightning-datatable  key-field="Id"
                     data={contactList.data}
                     columns={columns}
                     hide-checkbox-column="true"
-                    onrowaction={callRowAction}>
+                    onrowaction={crudActions}
+                    style="color:black;border-radius:5px">
         </lightning-datatable>
+      
       </lightning-layout-item>
+    </div>
     </lightning-layout>
   </lightning-card>
 </template>

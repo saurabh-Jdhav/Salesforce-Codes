@@ -22,15 +22,15 @@ const COLUMNS = [
 export default class ContactTable extends NavigationMixin(LightningElement) {
   columns = COLUMNS; // Initializing columns with defined values
   contactList;    // Initializing contactList variable
-  searchKey;     // Initializing searchKey variable
+  contactSearch;     // Initializing contactSearch variable
   // this function will get value from text input
-  handleInputChange(event) {
-    let searchKeys = event.target.value;
-    this.searchKey = searchKeys;      // setting the value of the search key variable with the input value
-    //window.console.log('Search Key: ',event.target.value);
+  handleSearchEvent(event) {
+    let contactSearchs = event.target.value;
+    this.contactSearch = contactSearchs;// setting the value of the search key variable with the input value
+    
   }
-  // Retrieving contactList by calling wire with the Apex method and searchKey parameter
-  @wire(searchContacts, {textKey : '$searchKey'}) contactList;
+  // Retrieving contactList by calling wire with the Apex method and contactSearch parameter
+  @wire(searchContacts, {textKey : '$contactSearch'}) contactList;
   //This function will create a new contact
   handleContactCreate() {
     this[NavigationMixin.Navigate]({
@@ -43,7 +43,7 @@ export default class ContactTable extends NavigationMixin(LightningElement) {
     });
   }
   //This function will return view, edit, delete the record based what will select in action
-  callRowAction(event) {
+  crudActions(event) {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
     this.recordId = row.Id;
