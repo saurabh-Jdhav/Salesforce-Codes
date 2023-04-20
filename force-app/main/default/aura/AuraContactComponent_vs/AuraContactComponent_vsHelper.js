@@ -26,7 +26,6 @@
                 component.set("v.contacts", contacts);
                 component.set("v.isLoading", false);
                 component.set("v.isLoaded", true);
-                debugger;
                 
             } else {
                 console.log("Failed with following state: " + state);

@@ -24,13 +24,21 @@ export default class ContactTable extends NavigationMixin(LightningElement) {
   contactList;    // Initializing contactList variable
   contactSearch;     // Initializing contactSearch variable
   // this function will get value from text input
+  errorEdit;
   handleSearchEvent(event) {
     let contactSearchs = event.target.value;
-    this.contactSearch = contactSearchs;// setting the value of the search key variable with the input value
-    
+    // setting the value of the search key variable with the input value
+    if(contactSearchs === '')
+    {
+      this.contactList=[];
+    }
+    else{
+      this.contactSearch = contactSearchs;
+      return refreshApex(this.contactList);
+    }
   }
   // Retrieving contactList by calling wire with the Apex method and contactSearch parameter
-  @wire(searchContacts, {textKey : '$contactSearch'}) contactList;
+  @wire(searchContacts, {keyWord : '$contactSearch'}) contactList;
   //This function will create a new contact
   handleContactCreate() {
     this[NavigationMixin.Navigate]({
@@ -58,27 +66,20 @@ export default class ContactTable extends NavigationMixin(LightningElement) {
         });
         break;
       case 'edit':
-        this[NavigationMixin.Navigate]({
-          type: 'standard__recordPage',
-          attributes: {
-            recordId: row.Id,
-            objectApiName: 'Contact',
-            actionName: 'edit'
-          }
-        });
-        return refreshApex(this.contactList); // Refreshing contactList after editing the record
+          this.navigateToEditPage(row);
+          
+          return refreshApex(this.contactList);       
      case 'delete':
         this.delContact();
         return refreshApex(this.contactList); // Record will be deleted
     }
   }
-  //This function created for deleting the record
+  //deleting the record
   delContact() {
-    //Invoke the deleteRecord to delete a record
+    //method call to delete a record
     deleteRecord(this.recordId)
       .then(() => {
         // We are firing a toast message
-
         this.dispatchEvent(
           new ShowToastEvent({
             title: 'Success',
@@ -92,11 +93,48 @@ export default class ContactTable extends NavigationMixin(LightningElement) {
         console.log(error);
         this.dispatchEvent(
           new ShowToastEvent({
-            title: 'Sorry',
+            title: 'ERROR',
             message: 'Cannot delete this record since it is associated with a case',
             variant: 'error'
           })
         );
       });
   }
+  
+  async navigateToEditPage(row){
+  try {
+    await this[NavigationMixin.Navigate]({
+      type: 'standard__recordPage',
+      attributes: {
+        recordId: row.Id,
+        objectApiName: 'Contact',
+        actionName: 'edit'
+      }
+  });
+    this.contactList= await refreshApex(this.contactList);
+    
+  }
+  catch(error){
+    this.error = error;
+  }
+  
 }
+}
+
+/*
+        edit
+        this[NavigationMixin.Navigate]({
+          type: 'standard__recordPage',
+          attributes: {
+            recordId: row.Id,
+            objectApiName: 'Contact',
+            actionName: 'edit'
+          }
+*/
+/*refreshApex()
+  {
+    return Promise.all([
+      eval("$A.get('e.force:refreshView').fire()"),
+      new Promise((resolve) => setTimeout(resolve,10))
+    ])
+  }*/

@@ -1,24 +1,24 @@
 public with sharing class WrapperClass {
-      /* method decorated with "@AuraEnabled(Cacheable=true)" that accepts a string parameter "textKey"
+      /* method decorated with "@AuraEnabled(Cacheable=true)" that accepts a string parameter "keyWord"
       and returns a list of "ContactWrapper" objects. */
       /*@AuraEnabled: Method can be called from an Aura component and for the response to be processed by JavaScript
       (Cacheable=true): will save query result in cache memory of browser */
       @AuraEnabled(Cacheable=true)
-      public static List<ContactWrapper> searchContacts(String textKey)
+      public static List<ContactWrapper> searchContacts(String keyWord)
       {
-        // Concatenate the wildcard search term "%"
-        textKey = '%'+ textKey +'%';
+        // Concatenate the wildcard search term "%" search using one keyword only or multiple keyword
+        keyWord = '%'+ keyWord +'%';
         // New list to hold the "ContactWrapper" objects
         List<ContactWrapper> objWrapperContact = new List<ContactWrapper>();
-        // retrieve a list of up to 10 records whose "Name" field matches the "textKey" search term
+        // retrieve a list of up to 10 records whose "Name" field matches the "keyWord" search term
         List<Contact> objContact = [SELECT Name, Email, MobilePhone,
                                   Account.BillingCity, Account.BillingState
                                   FROM Contact
-                                  WHERE Name LIKE: textKey
-                                  OR  Email LIKE: textKey
-                                  OR  MobilePhone LIKE: textKey
-                                  OR  Account.BillingCity LIKE: textKey
-                                  OR  Account.BillingState LIKE: textKey
+                                  WHERE Name LIKE: keyWord
+                                  OR  Email LIKE: keyWord
+                                  OR  MobilePhone LIKE: keyWord
+                                  OR  Account.BillingCity LIKE: keyWord
+                                  OR  Account.BillingState LIKE: keyWord
                                   LIMIT 10];
         for(Contact con :objContact )
         {
